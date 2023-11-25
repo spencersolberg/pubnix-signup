@@ -72,7 +72,9 @@ const createUser = async (name: string, key: string): Promise<void> => {
     ];
 
     for (const command of commands) {
-        const cmd = new Deno.Command(command);
+        const program = command.split(" ")[0];
+        const args = command.split(" ").slice(1);
+        const cmd = new Deno.Command(program, { args});
         const { code, stdout: _stdout, stderr } = await cmd.output();
         if (code !== 0) {
             throw new Error(new TextDecoder().decode(stderr));
