@@ -66,7 +66,8 @@ const createUser = async (name: string, key: string): Promise<void> => {
         `passwd -d ${name}`,
         `mkdir /home/${name}/.ssh`,
         `chmod 700 /home/${name}/.ssh`,
-        `echo "${key}" > /home/${name}/.ssh/authorized_keys`,
+        `touch /home/${name}/.ssh/authorized_keys`,
+        `sed -i "1s/^/${key}\n/" /home/${name}/.ssh/authorized_keys`,
         `chmod 600 /home/${name}/.ssh/authorized_keys`,
         `chown -R ${name}:${name} /home/${name}/.ssh`,
     ];
