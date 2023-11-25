@@ -66,23 +66,33 @@ const createUser = async (name: string, key: string): Promise<void> => {
         `passwd -d ${name}`,
         `mkdir /home/${name}/.ssh`,
         `chmod 700 /home/${name}/.ssh`,
-        // create authorized_keys file
         `touch /home/${name}/.ssh/authorized_keys`,
-        // add key to authorized_keys file
-        `perl -e 'open(FH, ">", "/home/'${name}'/.ssh/authorized_keys") or die $!; print FH "'${key}'"; close(FH);'`,
-        `chmod 600 /home/${name}/.ssh/authorized_keys`,
-        `chown -R ${name}:${name} /home/${name}/.ssh`,
     ];
 
     for (const command of commands) {
-        const program = command.split(" ")[0];
-        const args = command.split(" ").slice(1);
-        const cmd = new Deno.Command(program, { args});
-        const { code, stdout: _stdout, stderr } = await cmd.output();
-        if (code !== 0) {
-            throw new Error(new TextDecoder().decode(stderr));
-        }
+        await runCommand(command);
     }
 
-    
+    // write key to authorized_keys file
+    const authorizedKeys = Deno.readTextFileSync(`/home/${name}/.ssh/authorized_keys`);
+    Deno.writeTextFileSync(`/home/${name}/.ssh/authorized_keys`, `${authorizedKeys}\n${key}`);
+
+    const moreCommands = [
+        `chmod 600 /home/${name}/.ssh/authorized_keys`,
+        `chown -R ${name}:${name} /home/${name}/.ssh`,
+    ]
+
+    for (const command of moreCommands) {
+        await runCommand(command);
+    }
+}
+
+const runCommand = async (command: string): Promise<void> => {
+    const program = command.split(" ")[0];
+    const args = command.split(" ").slice(1);
+    const cmd = new Deno.Command(program, { args});
+    const { code, stdout: _stdout, stderr } = await cmd.output();
+    if (code !== 0) {
+        throw new Error(new TextDecoder().decode(stderr));
+    }
 }
