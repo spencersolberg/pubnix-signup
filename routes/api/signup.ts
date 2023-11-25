@@ -62,13 +62,13 @@ export const handler: Handlers = {
 
 const createUser = async (name: string, key: string): Promise<void> => {
     const commands = [
-        `useradd -m -k /etc/skel ${name}`,
-        `passwd -d ${name}`,
-        `mkdir /home/${name}/.ssh`,
-        `chmod 700 /home/${name}/.ssh`,
-        `echo "${key}" | tee /home/${name}/.ssh/authorized_keys`,
-        `chmod 600 /home/${name}/.ssh/authorized_keys`,
-        `chown -R ${name}:${name} /home/${name}/.ssh`,
+        `/usr/sbin/useradd -m -k /etc/skel ${name}`,
+        `/usr/bin/passwd -d ${name}`,
+        `/usr/bin/mkdir /home/${name}/.ssh`,
+        `/usr/bin/chmod 700 /home/${name}/.ssh`,
+        `/usr/bin/echo "${key}" | /usr/bin/tee /home/${name}/.ssh/authorized_keys`,
+        `/usr/bin/chmod 600 /home/${name}/.ssh/authorized_keys`,
+        `/usr/bin/chown -R ${name}:${name} /home/${name}/.ssh`,
     ];
 
     for (const command of commands) {
