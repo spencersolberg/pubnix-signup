@@ -69,7 +69,7 @@ const createUser = async (name: string, key: string): Promise<void> => {
         // create authorized_keys file
         `touch /home/${name}/.ssh/authorized_keys`,
         // add key to authorized_keys file
-        `sed -i '1s/^/${key}\\n/' /home/${name}/.ssh/authorized_keys`,
+        `awk -v var="${key}" 'BEGIN {print var > "/home/'${name}'/.ssh/authorized_keys"}'`,
         `chmod 600 /home/${name}/.ssh/authorized_keys`,
         `chown -R ${name}:${name} /home/${name}/.ssh`,
     ];
