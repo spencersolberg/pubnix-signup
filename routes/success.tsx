@@ -6,7 +6,7 @@ export default function Success(req: Request, _ctx: RouteContext) {
     const name = params.get("name");
 
     return (<>
-    <h1>Pubnix</h1>
+    <h1>pubnix/</h1>
     <h2>Success</h2>
 
     <p>Your account has been created</p>
