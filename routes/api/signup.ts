@@ -1,4 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
+import "$std/dotenv/load.ts";
 
 export const handler: Handlers = {
     GET(_req) {
@@ -85,6 +86,16 @@ const createUser = async (name: string, key: string): Promise<void> => {
     for (const command of moreCommands) {
         await runCommand(command);
     }
+
+    // append TLSA DNS record for subdomain
+    const tlsa = `_443._tcp.${name} IN TLSA ${Deno.env.get("TLSA_RECORD")}`;
+    const zoneFile = await Deno.readTextFile("/etc/coredns/zones/db.pubnix");
+    if (!zoneFile.includes(tlsa)) {
+        Deno.writeTextFileSync("/etc/coredns/zones/db.pubnix", `${zoneFile}\n\n${tlsa}`);
+    }
+
+    // restart coredns
+    await runCommand("systemctl restart coredns");
 }
 
 const runCommand = async (command: string): Promise<void> => {
