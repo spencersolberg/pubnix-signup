@@ -35,12 +35,21 @@ export default function SignupForm() {
   }
   return (
     <>
+    <style>
+      {`
+      #no-key-link {
+        font-size: 0.8em;
+      }
+      `}
+    </style>
       <form action="/api/signup" method="POST">
         <label htmlFor="name">Domain Name</label>
         <br />
         <input type="text" name="name" value={name} onChange={e => setName((e.target as HTMLInputElement).value)}/>
         <br />
         <label htmlFor="key">SSH Public Key</label>
+        <br />
+        <a href="https://tilde.club/wiki/ssh.html#how-to-make-an-ssh-key" target="_blank"  rel="noreferrer" id="no-key-link">Don't have a key?</a>
         <br />
         <textarea name="key" value={key} onChange={e => setKey((e.target as HTMLInputElement).value)} />
         <br />
