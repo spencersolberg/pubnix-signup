@@ -5,5 +5,7 @@ export default function SignUp() {
         <h1>pubnix/</h1>
         <h2>Signup</h2>
         <SignupForm />
+
+        <a href="/">Back to home</a>
     </>)
 }

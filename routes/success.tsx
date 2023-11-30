@@ -14,5 +14,7 @@ export default function Success(req: Request, _ctx: RouteContext) {
     <p>You can now log in with:</p>
     
     <pre>ssh {name}@pubnix</pre>
+
+    <a href="/">Back to home</a>
     </>);
 }
