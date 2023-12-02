@@ -12,17 +12,21 @@ export const handler: Handlers = {
     },
     async POST(req) {
         const form = await req.formData();
-        const name = form.get("name");
-        const key = form.get("key");
-        const signature = form.get("signature");
+        const nameValue = form.get("name");
+        const keyValue = form.get("key");
+        const signatureValue = form.get("signature");
 
-        if (!name || !key || !signature) {
+        if (!nameValue || !keyValue || !signatureValue) {
             return new Response("Missing parameters", {
                 status: 400,
             });
         }
 
-        const verifyUrl = `https://verify.spencersolberg.com/api/verify?name=${encodeURIComponent(name as string)}&message=${encodeURIComponent(key as string)}&signature=${encodeURIComponent(signature as string)}`;
+        const name = (nameValue as string).toLowerCase();
+        const key = keyValue as string;
+        const signature = signatureValue as string;
+
+        const verifyUrl = `https://verify.spencersolberg.com/api/verify?name=${encodeURIComponent(name)}&message=${encodeURIComponent(key)}&signature=${encodeURIComponent(signature)}`;
         console.log(verifyUrl);
 
         const verifyResponse = await fetch(verifyUrl);
@@ -39,7 +43,7 @@ export const handler: Handlers = {
         }
 
         try {
-            await createUser(name as string, key as string);
+            await createUser(name, key);
 
             return new Response(null, {
                 status: 301,
@@ -56,8 +60,6 @@ export const handler: Handlers = {
                 }
             })
         }
-
-
     }
 }
 
