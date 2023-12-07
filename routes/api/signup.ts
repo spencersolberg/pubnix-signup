@@ -1,5 +1,12 @@
 import { Handlers } from "$fresh/server.ts";
 import "$std/dotenv/load.ts";
+import { NodeClient } from "hs-client";
+import { client } from "https://esm.sh/v135/bcurl@0.2.1/denonext/bcurl.mjs";
+
+type Verification = {
+    success: boolean;
+    error?: string;
+}
 
 export const handler: Handlers = {
     GET(_req) {
@@ -26,11 +33,33 @@ export const handler: Handlers = {
         const key = keyValue as string;
         const signature = signatureValue as string;
 
-        const verifyUrl = `https://verify.spencersolberg.com/api/verify?name=${encodeURIComponent(name)}&message=${encodeURIComponent(key)}&signature=${encodeURIComponent(signature)}`;
-        console.log(verifyUrl);
+        const clientOptions = {
+            host: "127.0.0.1",
+            port: 12037
+        }
 
-        const verifyResponse = await fetch(verifyUrl);
-        const verification = await verifyResponse.json();
+        const client = new NodeClient(clientOptions);
+
+        // const verifyUrl = `https://verify.spencersolberg.com/api/verify?name=${encodeURIComponent(name)}&message=${encodeURIComponent(key)}&signature=${encodeURIComponent(signature)}`;
+        // console.log(verifyUrl);
+
+        // const verifyResponse = await fetch(verifyUrl);
+        // const verification = await verifyResponse.json();
+
+        let verification: Verification;
+
+        try {
+            const result = await client.execute("verifymessagewithname", [name, signature, key]);
+
+            verification = {
+                success: true
+            }
+        } catch (e) {
+            verification = {
+                success: false,
+                error: e
+            }
+        }
 
         if (!verification.success) {
             return new Response(null, {
