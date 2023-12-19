@@ -1,7 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
 import "$std/dotenv/load.ts";
 import { NodeClient } from "hs-client";
-import { client } from "https://esm.sh/v135/bcurl@0.2.1/denonext/bcurl.mjs";
 
 type Verification = {
     success: boolean;
@@ -35,7 +34,8 @@ export const handler: Handlers = {
 
         const clientOptions = {
             host: "127.0.0.1",
-            port: 12037
+            port: 12037,
+            apiKey: "pubnix"
         }
 
         const client = new NodeClient(clientOptions);
