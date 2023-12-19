@@ -59,6 +59,7 @@ export const handler: Handlers = {
                 success: false,
                 error: e
             }
+            console.error(e);
         }
 
         if (!verification.success) {
@@ -93,7 +94,6 @@ export const handler: Handlers = {
 }
 
 const createUser = async (name: string, key: string): Promise<void> => {
-    console.log(`Creating user ${name}`);
     const commands = [
         `useradd -m -k /etc/skel -s /bin/bash ${name}`,
         `passwd -d ${name}`,
