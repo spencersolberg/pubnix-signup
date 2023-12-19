@@ -93,6 +93,7 @@ export const handler: Handlers = {
 }
 
 const createUser = async (name: string, key: string): Promise<void> => {
+    console.log(`Creating user ${name}`);
     const commands = [
         `useradd -m -k /etc/skel -s /bin/bash ${name}`,
         `passwd -d ${name}`,
