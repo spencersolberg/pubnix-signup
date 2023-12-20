@@ -53,9 +53,7 @@ export const handler: Handlers = {
         }
 
         const token = await signToken(name);
-
-        const successUrl = `/success?token=${encodeURIComponent(token)}`;
-        const setTokenurl = `/auth/set-token?token=${encodeURIComponent(token)}&redirect=${encodeURIComponent(successUrl)}`;
+        const setTokenurl = `/auth/set-token?token=${encodeURIComponent(token)}&redirect=${encodeURIComponent("/")}`;
         return new Response(null, {
             status: 303,
             headers: {
