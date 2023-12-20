@@ -5,6 +5,7 @@
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $account from "./routes/account.tsx";
+import * as $api_account_delete from "./routes/api/account/delete.ts";
 import * as $api_joke from "./routes/api/joke.ts";
 import * as $api_keys_add from "./routes/api/keys/add.ts";
 import * as $api_keys_remove from "./routes/api/keys/remove.ts";
@@ -33,6 +34,7 @@ const manifest = {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
     "./routes/account.tsx": $account,
+    "./routes/api/account/delete.ts": $api_account_delete,
     "./routes/api/joke.ts": $api_joke,
     "./routes/api/keys/add.ts": $api_keys_add,
     "./routes/api/keys/remove.ts": $api_keys_remove,

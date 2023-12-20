@@ -40,5 +40,10 @@ export default async function Account(req: Request, ctx: FreshContext) {
             <br />
             <button type="submit">Add</button>
         </form>
+        <h3>Delete Account</h3>
+        <p>This will delete your account and all of your data</p>
+        <form action="/api/account/delete" method="POST">
+            <button type="submit">Delete</button>
+        </form>
     </>)
 }

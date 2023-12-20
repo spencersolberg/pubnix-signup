@@ -25,6 +25,7 @@ export const deleteUser = async (name: string): Promise<void> => {
     const actions: Promise<string | void>[] = [
         runCommand(`userdel -r ${name}`),
         removeTlsaRecord(name),
+        removeCaddyFile(name),
         runCommand("systemctl restart coredns")
     ]
 
@@ -92,6 +93,10 @@ ${name}.pubnix.systems {
         await Deno.remove(`/etc/caddy/caddyfiles/${name}.pubnix.systems.Caddyfile`);
         throw error;
     }
+}
+
+const removeCaddyFile = async (name: string): Promise<void> => {
+    await Deno.remove(`/etc/caddy/caddyfiles/${name}.pubnix.systems.Caddyfile`);
 }
 
 const makeSshDirectory = async (name: string): Promise<void> => {
