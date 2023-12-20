@@ -1,3 +1,5 @@
+import BobSignup from "../islands/BobSignup.tsx"
+
 export default function SignUp() {
     return (<>
         <h1>pubnix/</h1>
@@ -14,6 +16,8 @@ export default function SignUp() {
             <br />
             <br />
         </form>
+
+        <BobSignup />
 
         <a href="/">Back to home</a>
     </>)

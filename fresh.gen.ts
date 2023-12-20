@@ -24,6 +24,7 @@ import * as $signup from "./routes/signup.tsx";
 import * as $signup_success from "./routes/signup/success.tsx";
 import * as $signup_verify from "./routes/signup/verify.tsx";
 import * as $success from "./routes/success.tsx";
+import * as $BobSignup from "./islands/BobSignup.tsx";
 import * as $Challenge from "./islands/Challenge.tsx";
 import * as $SSHKey from "./islands/SSHKey.tsx";
 import * as $VerifyForm from "./islands/VerifyForm.tsx";
@@ -55,6 +56,7 @@ const manifest = {
     "./routes/success.tsx": $success,
   },
   islands: {
+    "./islands/BobSignup.tsx": $BobSignup,
     "./islands/Challenge.tsx": $Challenge,
     "./islands/SSHKey.tsx": $SSHKey,
     "./islands/VerifyForm.tsx": $VerifyForm,

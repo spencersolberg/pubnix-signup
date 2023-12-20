@@ -1,17 +1,3 @@
-declare global {
-	interface Window {
-		bob3: Bob3;
-	}
-}
-
-interface Bob3 {
-  connect(): Promise<Wallet>;
-}
-
-interface Wallet {
-  signWithName(name: string, message: string): Promise<string>;
-}
-
 export default function VerifyForm(props: { name: string, challenge: string, action: string }) {
     const signWithBobWallet = async () => {
         const wallet = await window.bob3.connect();
