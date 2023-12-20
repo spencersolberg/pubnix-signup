@@ -1,6 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
 import { setChallenge, getChallenge, generateChallenge } from "../../utils/kv.ts";
-import { isValidDomain } from "../../utils/utils.ts";
+import { listUsers } from "../../utils/users.ts";
 
 export const handler: Handlers = {
     GET(_req) {
@@ -22,10 +22,22 @@ export const handler: Handlers = {
         }
 
         const name = (nameValue as string).toLowerCase();
+        let users: string[];
+        try {
+            users = await listUsers();
+        } catch (error) {
+            console.error(error);
+            return new Response(null, {
+                status: 500,
+            });
+        }
 
-        if (!isValidDomain(name)) {
-            return new Response("Invalid name", {
-                status: 400,
+        if (Deno.build.os === "linux" && !users.includes(name)) {
+            return new Response(null, {
+                status: 303,
+                headers: {
+                    location: "/signup",
+                },
             });
         }
 
@@ -37,10 +49,10 @@ export const handler: Handlers = {
             challenge = generateChallenge(name);
             isNewChallenge = true;
         }
-        
+
         try {
             if (isNewChallenge) await setChallenge(name, challenge);
-            const verifyUrl = `/signup/verify?name=${encodeURIComponent(name)}`;
+            const verifyUrl = `/login/verify?name=${encodeURIComponent(name)}`;
             return new Response(null, {
                 status: 301,
                 headers: {

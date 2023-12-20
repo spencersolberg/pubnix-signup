@@ -1,9 +1,9 @@
 export default function SignUp() {
     return (<>
         <h1>pubnix/</h1>
-        <h2>Signup</h2>
+        <h2>Login</h2>
         
-        <form action="/api/signup" method="POST">
+        <form action="/api/login" method="POST">
             <label htmlFor="name">Domain Name</label>
             <br />
             <br />
