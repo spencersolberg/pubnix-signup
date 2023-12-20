@@ -26,6 +26,6 @@ export default async function Verify(req: Request, ctx: RouteContext) {
 
         <p>To verify ownership of your domain {name}/, please sign the following challenge:</p>
         <Challenge challenge={challenge} />
-        <VerifyForm name={name} challenge={challenge} action="/api/signup/verify"/>
+        <VerifyForm name={name} challenge={challenge} action="/api/login/verify"/>
     </>)
 }
