@@ -15,7 +15,7 @@ type WalletRecord = {
     value: string;
 }
 
-type DNSRecord = {
+export type DNSRecord = {
     kind: "dns";
     type: "A" | "AAAA" | "TLSA";
     domain: string;

@@ -4,6 +4,8 @@ import { listSshKeys } from "../utils/users.ts";
 import SSHKey from "../islands/SSHKey.tsx";
 import Header from "../components/Header.tsx";
 import { isHandshake } from "../utils/utils.ts";
+import { getDomains } from "../utils/kv.ts";
+import DomainConnection from "../components/DomainConnection.tsx";
 
 export default async function Account(req: Request, ctx: FreshContext) {
     const { name } = await getVerificationFromRequest(req);
@@ -15,6 +17,8 @@ export default async function Account(req: Request, ctx: FreshContext) {
     const isHandshakeRequest = isHandshake(req);
 
     const sshKeys = await listSshKeys(name);
+
+    const connections = await getDomains(name);
 
     return (<>
         <h1>pubnix/</h1>
@@ -36,6 +40,14 @@ export default async function Account(req: Request, ctx: FreshContext) {
             <button type="submit">Add</button>
         </form>
         <a href="https://tilde.club/wiki/ssh.html#how-to-make-an-ssh-key" target="_blank" rel="noreferrer">No SSH key?</a>
+        <h3>Domain</h3>
+        <p>Connecting your Handshake name allows your pubnix site to be accessible at https://{name}/</p>
+        {connections.length === 0 ? <>
+            <form action="/api/domains/add" method="POST">
+                <input type="hidden" name="domain" value={name} />
+                <button type="submit">Connect {name}/</button>
+            </form>
+        </> : connections.map(connection => <DomainConnection connection={connection} />)}
         <h3>Delete Account</h3>
         <p>This will delete your account and all of your data</p>
         <form action="/api/account/delete" method="POST">
