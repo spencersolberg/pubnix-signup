@@ -1,6 +1,7 @@
 import { listUsers } from "../utils/users.ts";
 import { isHandshake } from "../utils/utils.ts";
 import { getVerificationFromRequest } from "../utils/jwt.ts";
+import Header from "../components/Header.tsx";
 
 export default async function Home(req: Request) {
   const { name } = await getVerificationFromRequest(req);
@@ -18,38 +19,7 @@ export default async function Home(req: Request) {
   return (
     <>
       <h1>pubnix/</h1>
-      {name ? <>
-        <hr />
-        <p>Logged in as {name}/</p>
-        <nav>
-          <ul>
-            <li>
-              <a href={isHandshakeRequest ? `https://${name}.pubnix` : `https://${name}.pubnix.systems`}>Your Page</a>
-            </li>
-            <li>
-              <a href="/account">Account</a>
-            </li>
-            <li>
-              <a href="/logout">Logout</a>
-            </li>
-          </ul>
-        </nav>
-        <hr />
-      </> : <>
-        <hr />
-        <p>Not logged in</p>
-        <nav>
-          <ul>
-            <li>
-              <a href="/login">Login</a>
-            </li>
-            <li>
-              <a href="/signup">Signup</a>
-            </li>
-          </ul>
-        </nav>
-        <hr />
-      </>}
+      <Header name={name} isHandshakeRequest={isHandshakeRequest} />
       <h2>Home</h2>
 
       <p>Users:</p>

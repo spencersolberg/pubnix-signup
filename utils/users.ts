@@ -26,7 +26,8 @@ export const deleteUser = async (name: string): Promise<void> => {
         runCommand(`userdel -r ${name}`),
         removeTlsaRecord(name),
         removeCaddyFile(name),
-        runCommand("systemctl restart coredns")
+        runCommand("systemctl restart coredns"),
+        runCommand("systemctl reload caddy")
     ]
 
     for (const action of actions) {
@@ -100,7 +101,7 @@ const removeCaddyFile = async (name: string): Promise<void> => {
 }
 
 const makeSshDirectory = async (name: string): Promise<void> => {
-    await Deno.mkdir(`/home/${name}/.ssh`);
+    await Deno.mkdir(`/home/${name}/.ssh`, { recursive: true });
 }
 
 const touchAuthorizedKeys = async (name: string): Promise<void> => {
