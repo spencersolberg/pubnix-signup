@@ -2,37 +2,25 @@ import "$std/dotenv/load.ts";
 import { runCommand } from "./utils.ts";
 
 export const createUser = async (name: string): Promise<void> => {
-    const actions: Promise<string | void>[] = [
-        runCommand(`useradd -m -k /etc/skel -s /bin/bash ${name}`),
-        runCommand(`passwd -d ${name}`),
-        makeSshDirectory(name),
-        runCommand(`chmod 700 /home/${name}/.ssh`),
-        touchAuthorizedKeys(name),
-        runCommand(`chmod 600 /home/${name}/.ssh/authorized_keys`),
-        runCommand(`chown -R ${name}:${name} /home/${name}/.ssh`),
-        appendTlsaRecord(name),
-        generateCaddyFile(name),
-        runCommand("systemctl restart coredns"),
-        runCommand("systemctl reload caddy")
-    ];
-
-    for (const action of actions) {
-        await action;
-    };
+    await runCommand(`useradd -m -k /etc/skel -s /bin/bash ${name}`);
+    await runCommand(`passwd -d ${name}`);
+    await makeSshDirectory(name);
+    await runCommand(`chmod 700 /home/${name}/.ssh`);
+    await touchAuthorizedKeys(name);
+    await runCommand(`chmod 600 /home/${name}/.ssh/authorized_keys`);
+    await runCommand(`chown -R ${name}:${name} /home/${name}/.ssh`);
+    await appendTlsaRecord(name);
+    await generateCaddyFile(name);
+    await runCommand("systemctl restart coredns");
+    await runCommand("systemctl reload caddy");
 }
 
 export const deleteUser = async (name: string): Promise<void> => {
-    const actions: Promise<string | void>[] = [
-        runCommand(`userdel -r ${name}`),
-        removeTlsaRecord(name),
-        removeCaddyFile(name),
-        runCommand("systemctl restart coredns"),
-        runCommand("systemctl reload caddy")
-    ]
-
-    for (const action of actions) {
-        await action;
-    }
+    await runCommand(`userdel -r ${name}`);
+    await removeTlsaRecord(name);
+    await removeCaddyFile(name);
+    await runCommand("systemctl restart coredns");
+    await runCommand("systemctl reload caddy");
 }
 
 export const listUsers = async (): Promise<string[]> => {
