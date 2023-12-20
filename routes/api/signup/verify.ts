@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { getChallenge } from "../../../utils/kv.ts";
+import { getChallenge, removeChallenge } from "../../../utils/kv.ts";
 import { verifyMessage } from "../../../utils/hsd.ts";
 import { createUser } from "../../../utils/users.ts";
 import { signToken } from "../../../utils/jwt.ts";
@@ -53,6 +53,8 @@ export const handler: Handlers = {
                 },
             });
         }
+
+        await removeChallenge(name);
 
         // create user and whatnot
         if (Deno.build.os !== "linux") {

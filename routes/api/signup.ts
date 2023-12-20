@@ -1,6 +1,7 @@
 import { Handlers } from "$fresh/server.ts";
 import { setChallenge, getChallenge, generateChallenge } from "../../utils/kv.ts";
 import { isValidDomain } from "../../utils/utils.ts";
+import { listUsers } from "../../utils/users.ts";
 
 export const handler: Handlers = {
     GET(_req) {
@@ -26,6 +27,25 @@ export const handler: Handlers = {
         if (!isValidDomain(name)) {
             return new Response("Invalid name", {
                 status: 400,
+            });
+        }
+
+        let users: string[];
+        try {
+            users = await listUsers();
+        } catch (error) {
+            console.error(error);
+            return new Response(null, {
+                status: 500,
+            });
+        }
+
+        if (users.includes(name)) {
+            return new Response(null, {
+                status: 303,
+                headers: {
+                    location: "/login",
+                },
             });
         }
 

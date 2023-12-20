@@ -16,11 +16,15 @@ export const getChallenge = async (name: string): Promise<string> => {
         throw new Error(`No active challenge for ${name}`);
     }
     return res.value;
-}
+};
+
+export const removeChallenge = async (name: string): Promise<void> => {
+    await kv.delete(["challenges", name]);
+};
 
 export const generateChallenge = (name: string): string => {
     const uuid = crypto.randomUUID();
     const challenge = `pubnix.${name}.${uuid}`;
 
     return challenge;
-}
+};
