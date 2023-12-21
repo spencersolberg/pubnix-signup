@@ -40,7 +40,7 @@ export const connectDomain = async (domain: string): Promise<DomainConnection> =
         { kind: "wallet", type: "DS", value: dsRecord },
         { kind: "dns", type: "A", domain, value: Deno.env.get("A") ?? "" },
         { kind: "dns", type: "AAAA", domain, value: Deno.env.get("AAAA") ?? "" },
-        { kind: "dns", type: "TLSA", domain, value: tlsaRecord },
+        { kind: "dns", type: "TLSA", domain: `_443._tcp.${domain}`, value: tlsaRecord },
     ];
 
     return { domain, records, keyFile };
