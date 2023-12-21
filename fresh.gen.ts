@@ -6,7 +6,8 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $account from "./routes/account.tsx";
 import * as $api_account_delete from "./routes/api/account/delete.ts";
-import * as $api_joke from "./routes/api/joke.ts";
+import * as $api_domains_add from "./routes/api/domains/add.ts";
+import * as $api_domains_remove from "./routes/api/domains/remove.ts";
 import * as $api_keys_add from "./routes/api/keys/add.ts";
 import * as $api_keys_remove from "./routes/api/keys/remove.ts";
 import * as $api_login from "./routes/api/login.ts";
@@ -26,7 +27,6 @@ import * as $signup_verify from "./routes/signup/verify.tsx";
 import * as $success from "./routes/success.tsx";
 import * as $BobSignup from "./islands/BobSignup.tsx";
 import * as $Challenge from "./islands/Challenge.tsx";
-import * as $SSHKey from "./islands/SSHKey.tsx";
 import * as $VerifyForm from "./islands/VerifyForm.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
@@ -36,7 +36,8 @@ const manifest = {
     "./routes/_app.tsx": $_app,
     "./routes/account.tsx": $account,
     "./routes/api/account/delete.ts": $api_account_delete,
-    "./routes/api/joke.ts": $api_joke,
+    "./routes/api/domains/add.ts": $api_domains_add,
+    "./routes/api/domains/remove.ts": $api_domains_remove,
     "./routes/api/keys/add.ts": $api_keys_add,
     "./routes/api/keys/remove.ts": $api_keys_remove,
     "./routes/api/login.ts": $api_login,
@@ -58,7 +59,6 @@ const manifest = {
   islands: {
     "./islands/BobSignup.tsx": $BobSignup,
     "./islands/Challenge.tsx": $Challenge,
-    "./islands/SSHKey.tsx": $SSHKey,
     "./islands/VerifyForm.tsx": $VerifyForm,
   },
   baseUrl: import.meta.url,

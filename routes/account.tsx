@@ -1,11 +1,10 @@
 import { getVerificationFromRequest } from "../utils/jwt.ts";
 import { FreshContext } from "$fresh/server.ts";
 import { listSshKeys } from "../utils/users.ts";
-import SSHKey from "../islands/SSHKey.tsx";
 import Header from "../components/Header.tsx";
 import { isHandshake } from "../utils/utils.ts";
 import { getDomains } from "../utils/kv.ts";
-import DomainConnection from "../components/DomainConnection.tsx";
+import type { DomainConnection, DNSRecord } from "../utils/domain.ts";
 
 export default async function Account(req: Request, ctx: FreshContext) {
     const { name } = await getVerificationFromRequest(req);
@@ -52,6 +51,70 @@ export default async function Account(req: Request, ctx: FreshContext) {
         <p>This will delete your account and all of your data</p>
         <form action="/api/account/delete" method="POST">
             <button type="submit">Delete</button>
+        </form>
+    </>)
+}
+
+function SSHKey(props: { sshKey: string }) {
+    return (<>
+        <pre>{props.sshKey}</pre>
+        <form action="/api/keys/remove" method="POST">
+            <input type="hidden" name="key" value={props.sshKey} />
+            <button type="submit">Remove</button>
+        </form>
+    </>)
+}
+
+function DomainConnection(props: { connection: DomainConnection }) {
+    return (<>
+        <style>
+            {`
+            table {
+                border-collapse: collapse;
+            }
+            table, th, td {
+                border: 1px solid black;
+            }
+            `}
+        </style>
+        <h3>Connection Details</h3>
+        <p>Connect your domain, {props.connection.domain}/ by setting either wallet records or DNS records</p>
+        <h4>Wallet Records (Bob Wallet, ShakeStation, Namebase):</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {props.connection.records.filter(record => record.kind === "wallet").map(record => (<tr>
+                    <td>{record.type}</td>
+                    <td>{record.value}</td>
+                </tr>))}
+            </tbody>
+        </table>
+        <p><strong>OR</strong></p>
+        <h4>DNS Records (Varo, Namebase):</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Domain</th>
+                    <th>Type</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {(props.connection.records.filter(record => record.kind === "dns") as DNSRecord[]).map(record => (<tr>
+                    <td>{record.domain}</td>
+                    <td>{record.type}</td>
+                    <td>{record.value}</td>
+                </tr>))}
+            </tbody>
+        </table>
+        <form action="/api/domains/remove" method="POST">
+            <input type="hidden" name="domain" value={props.connection.domain} />
+            <button type="submit">Disconnect Domain</button>
         </form>
     </>)
 }

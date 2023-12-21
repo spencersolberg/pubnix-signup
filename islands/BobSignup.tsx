@@ -19,7 +19,7 @@ interface BobName {
     name: string;
 }
 
-export default function BobSignup() {
+export default function BobSignup(props: { signup: boolean }) {
     const [names, setNames] = useState<string[]>([]);
 
     const getNames = async (): Promise<string[]> => {
@@ -41,7 +41,7 @@ export default function BobSignup() {
                     <a href="#" onClick={() => {
                         const form = document.createElement("form");
                         form.setAttribute("method", "POST");
-                        form.setAttribute("action", "/api/signup");
+                        form.setAttribute("action", props.signup ? "/api/signup" : "/api/login");
 
                         const nameInput = document.createElement("input");
                         nameInput.setAttribute("type", "hidden");
