@@ -17,7 +17,7 @@ export default function SignUp() {
             <br />
         </form>
 
-        <BobSignup />
+        <BobSignup signup={true} />
 
         <a href="/">Back to home</a>
     </>)

@@ -75,6 +75,9 @@ function DomainConnection(props: { connection: DomainConnection }) {
             table, th, td {
                 border: 1px solid black;
             }
+            th, td {
+                padding: 5px;
+            }
             `}
         </style>
         <h3>Connection Details</h3>
