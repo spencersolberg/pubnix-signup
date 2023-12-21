@@ -37,5 +37,9 @@ export default function DomainConnection(props: { connection: DomainConnection }
                 </tr>))}
             </tbody>
         </table>
+        <form action="/api/domains/remove" method="POST">
+            <input type="hidden" name="domain" value={props.connection.domain} />
+            <button type="submit">Disconnect Domain</button>
+        </form>
     </>)
 }
