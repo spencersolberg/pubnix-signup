@@ -1,4 +1,4 @@
-export default function VerifyForm(props: { name: string, challenge: string, action: string }) {
+export default function VerifyForm(props: { name: string, challenge: string, action: string, isHandshakeRequest: boolean }) {
     const signWithBobWallet = async () => {
         const wallet = await window.bob3.connect();
         const signature = await wallet.signWithName(props.name, props.challenge);
@@ -41,6 +41,6 @@ export default function VerifyForm(props: { name: string, challenge: string, act
         <button type="button" onClick={signWithBobWallet}>Sign with Bob Wallet</button>
         <br />
         <br />
-        <a href={`https://shakestation.io/manage/${props.name}`} target="_blank" rel="noreferrer"><button type="button">Sign with ShakeStation</button></a>
+        <a href={props.isHandshakeRequest ? `https://shakestation/manage/${props.name}#signMessage:${encodeURIComponent(props.challenge)}` : `https://shakestation.io/manage/${props.name}#signMessage:${props.challenge}`} target="_blank" rel="noreferrer"><button type="button">Sign with ShakeStation</button></a>
     </>)
 }
